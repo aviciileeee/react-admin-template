@@ -9,6 +9,7 @@ specifiers:
   '@vitejs/plugin-react': ^4.2.1
   antd: ^5.17.3
   axios: ^1.7.2
+  dayjs: ^1.11.11
   eslint: ^8.57.0
   eslint-plugin-react-hooks: ^4.6.0
   eslint-plugin-react-refresh: ^0.4.6
@@ -22,6 +23,7 @@ specifiers:
 dependencies:
   antd: 5.17.3_nnrd3gsncyragczmpvfhocinkq
   axios: 1.7.2
+  dayjs: 1.11.11
   react: 18.3.1
   react-dom: 18.3.1_react@18.3.1
   react-router-dom: 6.23.1_nnrd3gsncyragczmpvfhocinkq
