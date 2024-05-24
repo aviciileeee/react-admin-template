@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { message } from 'antd'
 import { hideLoading, showLoading } from './loading'
+import env from '@/config'
 import type { AxiosInstance, AxiosRequestConfig } from 'axios'
 
 class Request {
@@ -8,7 +9,7 @@ class Request {
 
   constructor(
     private config: AxiosRequestConfig = {
-      baseURL: import.meta.env.VITE_BASE_API,
+      baseURL: env.baseApi,
       timeout: 8000,
       timeoutErrorMessage: '请求超时,请稍后再试'
     }
@@ -21,10 +22,10 @@ class Request {
       if (token) {
         config.headers['Authorization'] = `Bearer ${token}`
       }
-      if (import.meta.env.VITE_MOCK === 'true') {
-        config.baseURL = import.meta.env.VITE_MOCK_API
+      if (env.mock) {
+        config.baseURL = env.mockApi
       } else {
-        config.baseURL = import.meta.env.VITE_BASE_API
+        config.baseURL = env.baseApi
       }
       return {
         ...config
