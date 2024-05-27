@@ -1,7 +1,8 @@
 import axios from 'axios'
-import type { AxiosRequestConfig, AxiosInstance } from 'axios'
+import type { AxiosInstance, AxiosError } from 'axios'
 import { AdminRequestConfig, ResponseType } from './type'
 import storage from '@/utils/storage'
+import { showLoading, hideLoading } from '@/utils/loading'
 
 export default class Request {
   private instance: AxiosInstance
@@ -10,6 +11,9 @@ export default class Request {
     // 全局拦截器
     this.instance.interceptors.request.use(
       config => {
+        if (!config.handleLoading) {
+          showLoading()
+        }
         const token = storage.get('token')
         if (token) {
           config.headers['Authorization'] = `Bearer ${token}`
@@ -17,15 +21,26 @@ export default class Request {
         return config
       },
       err => {
+        console.log('request error: ', err)
         return err
       }
     )
     this.instance.interceptors.response.use(
       res => {
+        if (!res.config.handleLoading) {
+          hideLoading()
+        }
         return res.data
       },
-      err => {
-        return err
+      (err: AxiosError) => {
+        if (err.config?.handleError) {
+          return Promise.reject({
+            code: err.code,
+            message: err.message,
+            name: err.name
+          })
+        }
+        console.log('response error: ', err)
       }
     )
     // 实例拦截器
@@ -41,23 +56,39 @@ export default class Request {
     }
   }
 
-  request<T = unknown>(config: AxiosRequestConfig) {
+  request<T = unknown>(config: AdminRequestConfig) {
     return this.instance.request<null, ResponseType<T>>(config)
   }
 
-  get<T, P = unknown>(url: string, params?: P) {
+  get<T, P = unknown>(
+    url: string,
+    params?: P,
+    config: AdminRequestConfig = {
+      handleLoading: false,
+      handleError: false
+    }
+  ) {
     return this.request<T>({
       url,
       params,
-      method: 'GET'
+      method: 'GET',
+      ...config
     })
   }
 
-  post<T, D = unknown>(url: string, data?: D) {
+  post<T, D = unknown>(
+    url: string,
+    data?: D,
+    config: AdminRequestConfig = {
+      handleLoading: false,
+      handleError: false
+    }
+  ) {
     return this.request<T>({
       url,
       data,
-      method: 'POST'
+      method: 'POST',
+      ...config
     })
   }
 }
