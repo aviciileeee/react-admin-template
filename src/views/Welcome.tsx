@@ -1,9 +1,9 @@
 import React, { memo, useEffect } from 'react'
-import Request from '@/utils/request'
+import { login } from '@/service/modules/user'
 const Welcome = memo(() => {
   useEffect(() => {
-    Request.get<{ name: string }>('/test').then(res => {
-      console.log(res.name)
+    login().then(res => {
+      console.log(res.data)
     })
   }, [])
   console.log(import.meta.env)

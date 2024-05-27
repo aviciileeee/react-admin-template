@@ -4,6 +4,10 @@
   background-position: center;
   height: 100vh;
 
+  // :global(.ant-btn-primary) {
+  //   background-color: red;
+  // }
+
   .login-wrapper {
     box-sizing: border-box;
     position: absolute;
