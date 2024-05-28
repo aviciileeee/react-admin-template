@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@ant-design/icons': ^5.3.7
   '@types/node': ^20.12.12
   '@types/react': ^18.2.66
   '@types/react-dom': ^18.2.22
@@ -21,6 +22,7 @@ specifiers:
   vite: ^5.2.0
 
 dependencies:
+  '@ant-design/icons': 5.3.7_nnrd3gsncyragczmpvfhocinkq
   antd: 5.17.3_nnrd3gsncyragczmpvfhocinkq
   axios: 1.7.2
   dayjs: 1.11.11

@@ -1,32 +1,22 @@
-import React, { memo, useState } from 'react'
-import { login } from '@/service/modules/user'
-import { Button, App } from 'antd'
+import React, { memo, useEffect, useRef } from 'react'
 const Welcome = memo(() => {
-  const [loading, setLoading] = useState(false)
-  const { message } = App.useApp()
-  const handleLogin = async () => {
-    setLoading(true)
-    try {
-      const res = await login()
-      console.log(res.data)
-    } catch (error) {
-      console.log(error)
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      message.error((error as any).message)
-    } finally {
-      setLoading(false)
-    }
-  }
+  // const targetNode = useRef(null)
+  useEffect(() => {
+    const observer = new MutationObserver(function (mutationList, observer) {
+      console.log('in', mutationList, observer)
+    })
+    observer.observe(document.querySelector('#content')!, {
+      attributes: true,
+      childList: true,
+      subtree: true
+    })
+  })
   return (
-    <div>
-      Welcome
-      <span>
-        {loading ? 'loading....' : 'finished'} {loading}
-      </span>
-      <Button type='primary' loading={loading} onClick={handleLogin}>
-        登录
-      </Button>
-    </div>
+    <>
+      <div id='content'>
+        <span>welcome</span>
+      </div>
+    </>
   )
 })
 
