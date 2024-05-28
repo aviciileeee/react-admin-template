@@ -4,13 +4,15 @@ import styles from './index.module.scss'
 import { login } from '@/service/modules/user'
 import { Login } from '@/types/api'
 import { App } from 'antd'
-import storage from '@/utils/storage'
+import { useUserStore } from '@/store/user'
+
 // import
 const LoginFc = memo(() => {
+  const userStore = useUserStore()
   const { message } = App.useApp()
   const onFinished = async (values: Login.params) => {
     const data = await login(values)
-    storage.set('token', data)
+    userStore.updateToken(data.data)
     message.success('登录成功')
     const params = new URLSearchParams(location.search)
     location.href = params.get('callback') || '/'

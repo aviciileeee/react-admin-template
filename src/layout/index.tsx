@@ -1,14 +1,24 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Outlet } from 'react-router-dom'
 import NavHeader from '@/components/NavHeader'
 import NavFooter from '@/components/NavFooter'
 import SideMenu from '@/components/SideMenu'
 import { Layout, theme, Watermark } from 'antd'
+import { getUserInfo } from '@/service/modules/user'
+import { useUserStore } from '@/store/user'
 import styles from './index.module.scss'
 const { Header, Sider, Content } = Layout
 
 const App: React.FC = () => {
+  const userStore = useUserStore()
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await getUserInfo()
+      userStore.updateUserInfo(result.data)
+    }
+    fetchData()
+  }, [])
   const [collapsed, setCollapsed] = useState(false)
   const {
     token: { colorBgContainer, borderRadiusLG }

@@ -4,3 +4,10 @@ export namespace Login {
     password: string
   }
 }
+
+export namespace User {
+  export interface UserItem {
+    username: string
+    userId: string
+  }
+}
