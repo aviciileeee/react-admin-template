@@ -1,7 +1,7 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom'
 import type { RouteObject } from 'react-router-dom'
 import Login from '@/views/login/index'
-import Welcome from '@/views/Welcome'
+import Welcome from '@/views/welcome'
 import NotFound from '@/views/404'
 import Layout from '@/layout'
 
