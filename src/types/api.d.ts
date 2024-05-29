@@ -6,8 +6,17 @@ export namespace Login {
 }
 
 export namespace User {
+  export interface params {
+    id?: number
+    userName?: string
+    state?: number
+  }
   export interface UserItem {
-    username: string
-    userId: string
+    userName: string
+    id: string
+    email: string
+    role: string
+    state: number
+    registerTime: string
   }
 }

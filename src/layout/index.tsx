@@ -15,7 +15,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       const result = await getUserInfo()
-      userStore.updateUserInfo(result.data)
+      userStore.updateUserInfo(result)
     }
     fetchData()
   }, [])

@@ -1,4 +1,4 @@
-import type { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
+import type { AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 
 export interface Interceptor {
   requestSuccessFn?: (config: InternalAxiosRequestConfig) => InternalAxiosRequestConfig
@@ -9,12 +9,17 @@ export interface Interceptor {
   responseFailureFn?: (err: any) => any
 }
 
-export interface AdminRequestConfig extends AxiosRequestConfig {
-  interceptors?: Interceptor
-}
-
 export interface ResponseType<T> {
   code: number
   data: T
   msg: string
+}
+
+export interface ResultData<T> {
+  list: T[]
+  page: {
+    pageNum: number
+    pageSize: number
+    total: number
+  }
 }

@@ -1,12 +1,11 @@
 import axios from 'axios'
-import type { AxiosInstance, AxiosError } from 'axios'
-import { AdminRequestConfig, ResponseType } from './type'
+import type { AxiosInstance, AxiosError, AxiosRequestConfig } from 'axios'
 import storage from '@/utils/storage'
 import { showLoading, hideLoading } from '@/utils/loading'
 
 export default class Request {
   private instance: AxiosInstance
-  constructor(private config: AdminRequestConfig) {
+  constructor(private config: AxiosRequestConfig) {
     this.instance = axios.create(config)
     // 全局拦截器
     this.instance.interceptors.request.use(
@@ -30,7 +29,7 @@ export default class Request {
         if (!res.config.handleLoading) {
           hideLoading()
         }
-        return res.data
+        return res.data.data
       },
       (err: AxiosError) => {
         if (err.config?.handleError) {
@@ -56,14 +55,14 @@ export default class Request {
     }
   }
 
-  request<T = unknown>(config: AdminRequestConfig) {
-    return this.instance.request<null, ResponseType<T>>(config)
+  request<T = unknown>(config: AxiosRequestConfig) {
+    return this.instance.request<null, T>(config)
   }
 
   get<T, P = unknown>(
     url: string,
     params?: P,
-    config: AdminRequestConfig = {
+    config: AxiosRequestConfig = {
       handleLoading: false,
       handleError: false
     }
@@ -79,7 +78,7 @@ export default class Request {
   post<T, D = unknown>(
     url: string,
     data?: D,
-    config: AdminRequestConfig = {
+    config: AxiosRequestConfig = {
       handleLoading: false,
       handleError: false
     }

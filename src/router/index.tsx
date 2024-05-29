@@ -3,6 +3,7 @@ import type { RouteObject } from 'react-router-dom'
 import Login from '@/views/login/index'
 import Dashboard from '@/views/dashboard'
 import Welcome from '@/views/welcome'
+import UserList from '@/views/system/user'
 import NotFound from '@/views/404'
 import Layout from '@/layout'
 
@@ -21,6 +22,10 @@ const routes: RouteObject[] = [
       {
         path: '/dashboard',
         element: <Dashboard />
+      },
+      {
+        path: '/user-list',
+        element: <UserList />
       }
     ]
   },
