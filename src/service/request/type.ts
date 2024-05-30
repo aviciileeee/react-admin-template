@@ -17,9 +17,7 @@ export interface ResponseType<T> {
 
 export interface ResultData<T> {
   list: T[]
-  page: {
-    pageNum: number
-    pageSize: number
-    total: number
-  }
+  pageNum: number
+  pageSize: number
+  total: number
 }

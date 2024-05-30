@@ -1,18 +1,49 @@
 import React, { memo, useEffect, useState } from 'react'
 import { Button, Form, Table, Input, Select, Space } from 'antd'
 import { User } from '@/types/api'
-import { getUserList } from '@/service/modules/user'
+import { getPagingUserList } from '@/service/modules/user'
 import { formatDate } from '@/utils'
 import type { TableColumnsType } from 'antd'
 const UserList = memo(() => {
   const [data, setData] = useState<User.UserItem[]>([])
+  const [form] = Form.useForm()
+  const [total, setTotal] = useState(0)
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 5
+  })
   const handleGetUserList = async () => {
-    const result = await getUserList()
+    const result = await getPagingUserList(
+      pagination.current,
+      pagination.pageSize,
+      form.getFieldsValue()
+    )
     setData(result.list)
+    setTotal(result.total)
+    setPagination({
+      current: result.pageNum,
+      pageSize: result.pageSize
+    })
   }
+
+  const handleSearch = () => {
+    if (pagination.current === 1) {
+      handleGetUserList()
+    } else {
+      setPagination({
+        current: 1,
+        pageSize: pagination.pageSize
+      })
+    }
+  }
+
+  const handleReset = () => {
+    form.resetFields
+  }
+
   useEffect(() => {
     handleGetUserList()
-  }, [])
+  }, [pagination.current, pagination.pageSize])
 
   const columns: TableColumnsType<User.UserItem> = [
     {
@@ -72,7 +103,7 @@ const UserList = memo(() => {
   ]
   return (
     <div className='user-list'>
-      <Form className='search-form' layout='inline' initialValues={{ state: 0 }}>
+      <Form className='search-form' form={form} layout='inline' initialValues={{ state: 0 }}>
         <Form.Item label='用户id' name='userId'>
           <Input placeholder='请输入用户id' />
         </Form.Item>
@@ -81,16 +112,26 @@ const UserList = memo(() => {
         </Form.Item>
         <Form.Item label='状态' name='state'>
           <Select>
-            <Select.Option value={0}>所有</Select.Option>
-            <Select.Option value={1}>在职</Select.Option>
-            <Select.Option value={2}>试用期</Select.Option>
-            <Select.Option value={3}>离职</Select.Option>
+            <Select.Option key={0} value={0}>
+              所有
+            </Select.Option>
+            <Select.Option key={1} value={1}>
+              在职
+            </Select.Option>
+            <Select.Option key={2} value={2}>
+              试用期
+            </Select.Option>
+            <Select.Option key={3} value={3}>
+              离职
+            </Select.Option>
           </Select>
         </Form.Item>
         <Form.Item>
           <Space>
-            <Button type='primary'>搜索</Button>
-            <Button>重置</Button>
+            <Button type='primary' onClick={handleSearch}>
+              搜索
+            </Button>
+            <Button onClick={handleReset}>重置</Button>
           </Space>
         </Form.Item>
       </Form>
@@ -106,7 +147,27 @@ const UserList = memo(() => {
             </Space>
           </div>
         </div>
-        <Table bordered rowSelection={{ type: 'checkbox' }} dataSource={data} columns={columns} />;
+        <Table
+          bordered
+          rowSelection={{ type: 'checkbox' }}
+          rowKey={'id'}
+          dataSource={data}
+          columns={columns}
+          pagination={{
+            total: total,
+            current: pagination.current,
+            pageSize: pagination.pageSize,
+            position: ['bottomRight'],
+            onChange: (pageNum, pageSize) =>
+              setPagination({
+                current: pageNum,
+                pageSize: pageSize
+              }),
+            showTotal: () => {
+              return `总共${total}条`
+            }
+          }}
+        />
       </div>
     </div>
   )

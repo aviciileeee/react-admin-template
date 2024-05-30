@@ -5,8 +5,13 @@ export namespace Login {
   }
 }
 
+export interface PageParams {
+  pageNumber: number
+  pageSize: number
+}
+
 export namespace User {
-  export interface params {
+  export interface params extends PageParams {
     id?: number
     userName?: string
     state?: number

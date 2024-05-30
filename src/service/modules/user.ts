@@ -13,6 +13,6 @@ export const getUserInfo = () => {
   return request.get<User.UserItem>('/users/getUserInfo')
 }
 
-export const getUserList = () => {
-  return request.get<ResultData<User.UserItem>>('/users/list?pageNumber=1&pageSize=10')
+export const getPagingUserList = (pageNumber: number, pageSize: number, params: User.params) => {
+  return request.get<ResultData<User.UserItem>>(`/users/list/${pageNumber}/${pageSize}`, params)
 }
